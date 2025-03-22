@@ -65,9 +65,10 @@ export default async function handler(
 
     // Post an initial tweet to get things started
     try {
-      const initialTweet = `Hello Twitter! I'm ${config.name}, a Twitter bot ${config.searchKeywords.length > 0 
-        ? `interested in ${config.searchKeywords.join(', ')}` 
-        : 'ready to engage with the Twitter community'}. Let's start some conversations! #AI #TwitterBot`;
+      // Simplified initial tweet without mentions or too many hashtags
+      const initialTweet = `Hello! I'm ${config.name}, ready to share insights${config.searchKeywords.length > 0 
+        ? ` about ${config.searchKeywords.slice(0, 2).join(' and ')}` 
+        : ''}. Looking forward to connecting!`;
       
       const worker = agent.workers.find(w => w.id === "twitter_worker");
       if (worker) {
@@ -76,12 +77,15 @@ export default async function handler(
           console.log("Posting initial tweet to kickstart the agent's activity...");
           const result = await postTweetFn.executable({ 
             tweet: initialTweet, 
-            tweet_reasoning: "Initial introduction tweet to establish presence and begin engagement" 
+            tweet_reasoning: "Simple introduction tweet to establish presence" 
           }, console.log);
           
           // Update status with the initial tweet
           activeAgents[agentId].status.lastTweet = initialTweet;
           activeAgents[agentId].status.tweet_count = 1;
+          
+          // Log the result of the tweet attempt
+          console.log("Initial tweet posting result:", result);
         }
       }
     } catch (tweetError) {

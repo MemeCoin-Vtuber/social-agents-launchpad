@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import AgentForm from '../components/AgentForm';
 import AgentStatus from '../components/AgentStatus';
@@ -11,12 +11,30 @@ export default function Home() {
   const [agentStatus, setAgentStatus] = useState<AgentStatusType | null>(null);
   const [agentName, setAgentName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  
+  // Use a ref to store the interval ID for proper cleanup
+  const statusPollingRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Clean up polling on component unmount
+  useEffect(() => {
+    return () => {
+      if (statusPollingRef.current) {
+        clearInterval(statusPollingRef.current);
+      }
+    };
+  }, []);
 
   const createAgent = async (config: AgentConfig) => {
     setIsCreating(true);
     setError(null);
     
     try {
+      // Clear any existing polling interval
+      if (statusPollingRef.current) {
+        clearInterval(statusPollingRef.current);
+        statusPollingRef.current = null;
+      }
+      
       const response = await fetch('/api/create-agent', {
         method: 'POST',
         headers: {
@@ -35,7 +53,7 @@ export default function Home() {
       setAgentStatus(data.status);
       setAgentName(config.name);
       
-      // Poll for status updates
+      // Start polling with the new agent ID
       startStatusPolling(data.agentId);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -45,31 +63,40 @@ export default function Home() {
   };
 
   const startStatusPolling = (id: string) => {
-    // In a real application, you'd implement a polling mechanism or WebSockets
-    // to get real-time updates from the server
     console.log(`Started polling for agent ${id} status updates`);
     
-    // Simple polling implementation (in a real app, you'd want to clean this up properly)
-    const pollInterval = setInterval(async () => {
+    // Clear any existing polling interval
+    if (statusPollingRef.current) {
+      clearInterval(statusPollingRef.current);
+    }
+    
+    // Set up new polling interval
+    statusPollingRef.current = setInterval(async () => {
       try {
-        // This endpoint would need to be implemented to return current agent status
         const response = await fetch(`/api/agent-status?id=${id}`);
+        
+        if (response.status === 404) {
+          console.warn(`Agent ${id} not found. Stopping polling.`);
+          clearInterval(statusPollingRef.current!);
+          statusPollingRef.current = null;
+          return;
+        }
+        
         if (response.ok) {
           const data = await response.json();
           setAgentStatus(data.status);
           
           // If agent is no longer running, stop polling
           if (!data.status.isRunning) {
-            clearInterval(pollInterval);
+            console.log(`Agent ${id} is no longer running. Stopping polling.`);
+            clearInterval(statusPollingRef.current!);
+            statusPollingRef.current = null;
           }
         }
       } catch (error) {
         console.error('Error polling for status:', error);
       }
     }, 10000); // Poll every 10 seconds
-    
-    // Save the interval ID for cleanup (not implemented here)
-    return pollInterval;
   };
 
   return (
