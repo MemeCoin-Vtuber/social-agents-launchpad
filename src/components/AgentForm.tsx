@@ -37,162 +37,163 @@ export default function AgentForm({ onSubmit, isLoading }: AgentFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="agent-card space-y-6">
-      <h2 className="text-center">Create Twitter Agent</h2>
+    <form onSubmit={handleSubmit(onFormSubmit)} className="agent-card">
+      <h2 className="text-center mb-6">Create Twitter Agent</h2>
       
       {/* Agent Information */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold border-b-2 border-black pb-2">Agent Information</h3>
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold border-b-2 border-black pb-2 mb-3">Agent Information</h3>
         
-        <div>
-          <label className="form-label">
-            Agent Name
-          </label>
-          <input
-            type="text"
-            {...register('name', { required: 'Agent name is required' })}
-            className="form-input"
-            placeholder="Enter agent name"
-          />
-          {errors.name && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.name.message}</p>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="form-label text-sm">
+              Agent Name
+            </label>
+            <input
+              type="text"
+              {...register('name', { required: 'Agent name is required' })}
+              className="form-input py-2"
+              placeholder="Enter agent name"
+            />
+            {errors.name && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.name.message}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="form-label text-sm">
+              Agent Goal
+            </label>
+            <input
+              type="text"
+              {...register('goal', { required: 'Agent goal is required' })}
+              placeholder="e.g., Engage with tech community"
+              className="form-input py-2"
+            />
+            {errors.goal && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.goal.message}</p>
+            )}
+          </div>
         </div>
         
-        <div>
-          <label className="form-label">
-            Agent Goal
-          </label>
-          <input
-            type="text"
-            {...register('goal', { required: 'Agent goal is required' })}
-            placeholder="e.g., Engage with tech community and share AI news"
-            className="form-input"
-          />
-          {errors.goal && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.goal.message}</p>
-          )}
-        </div>
-        
-        <div>
-          <label className="form-label">
+        <div className="mt-3">
+          <label className="form-label text-sm">
             Agent Description
           </label>
           <textarea
             {...register('description', { required: 'Agent description is required' })}
-            rows={3}
+            rows={2}
             placeholder="Describe your agent's personality and what it does"
             className="form-input"
           />
           {errors.description && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.description.message}</p>
+            <p className="mt-1 text-xs text-heroRed font-bold">{errors.description.message}</p>
           )}
         </div>
       </div>
       
       {/* Twitter Credentials */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold border-b-2 border-black pb-2">Twitter API Credentials</h3>
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold border-b-2 border-black pb-2 mb-3">Twitter API Credentials</h3>
         
-        <div>
-          <label className="form-label">
-            API Key
-          </label>
-          <input
-            type="text"
-            {...register('twitterCredentials.apiKey', { required: 'API Key is required' })}
-            className="form-input"
-          />
-          {errors.twitterCredentials?.apiKey && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.twitterCredentials.apiKey.message}</p>
-          )}
-        </div>
-        
-        <div>
-          <label className="form-label">
-            API Key Secret
-          </label>
-          <input
-            type="password"
-            {...register('twitterCredentials.apiKeySecret', { required: 'API Key Secret is required' })}
-            className="form-input"
-          />
-          {errors.twitterCredentials?.apiKeySecret && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.twitterCredentials.apiKeySecret.message}</p>
-          )}
-        </div>
-        
-        <div>
-          <label className="form-label">
-            Access Token
-          </label>
-          <input
-            type="text"
-            {...register('twitterCredentials.accessToken', { required: 'Access Token is required' })}
-            className="form-input"
-          />
-          {errors.twitterCredentials?.accessToken && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.twitterCredentials.accessToken.message}</p>
-          )}
-        </div>
-        
-        <div>
-          <label className="form-label">
-            Access Token Secret
-          </label>
-          <input
-            type="password"
-            {...register('twitterCredentials.accessTokenSecret', { required: 'Access Token Secret is required' })}
-            className="form-input"
-          />
-          {errors.twitterCredentials?.accessTokenSecret && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.twitterCredentials.accessTokenSecret.message}</p>
-          )}
-        </div>
-        
-        <div>
-          <label className="form-label">
-            Bearer Token
-          </label>
-          <input
-            type="password"
-            {...register('twitterCredentials.bearerToken', { required: 'Bearer Token is required' })}
-            className="form-input"
-          />
-          {errors.twitterCredentials?.bearerToken && (
-            <p className="mt-1 text-sm text-heroRed font-bold">{errors.twitterCredentials.bearerToken.message}</p>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="form-label text-sm">
+              API Key
+            </label>
+            <input
+              type="text"
+              {...register('twitterCredentials.apiKey', { required: 'API Key is required' })}
+              className="form-input py-2"
+            />
+            {errors.twitterCredentials?.apiKey && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.twitterCredentials.apiKey.message}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="form-label text-sm">
+              API Key Secret
+            </label>
+            <input
+              type="password"
+              {...register('twitterCredentials.apiKeySecret', { required: 'API Key Secret is required' })}
+              className="form-input py-2"
+            />
+            {errors.twitterCredentials?.apiKeySecret && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.twitterCredentials.apiKeySecret.message}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="form-label text-sm">
+              Access Token
+            </label>
+            <input
+              type="text"
+              {...register('twitterCredentials.accessToken', { required: 'Access Token is required' })}
+              className="form-input py-2"
+            />
+            {errors.twitterCredentials?.accessToken && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.twitterCredentials.accessToken.message}</p>
+            )}
+          </div>
+          
+          <div>
+            <label className="form-label text-sm">
+              Access Token Secret
+            </label>
+            <input
+              type="password"
+              {...register('twitterCredentials.accessTokenSecret', { required: 'Access Token Secret is required' })}
+              className="form-input py-2"
+            />
+            {errors.twitterCredentials?.accessTokenSecret && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.twitterCredentials.accessTokenSecret.message}</p>
+            )}
+          </div>
+          
+          <div className="md:col-span-2">
+            <label className="form-label text-sm">
+              Bearer Token
+            </label>
+            <input
+              type="password"
+              {...register('twitterCredentials.bearerToken', { required: 'Bearer Token is required' })}
+              className="form-input py-2"
+            />
+            {errors.twitterCredentials?.bearerToken && (
+              <p className="mt-1 text-xs text-heroRed font-bold">{errors.twitterCredentials.bearerToken.message}</p>
+            )}
+          </div>
         </div>
       </div>
       
       {/* Search Keywords */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold border-b-2 border-black pb-2">Search Keywords</h3>
-        <p className="text-md font-bold">
-          Add keywords the agent should search for on Twitter
-        </p>
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold border-b-2 border-black pb-2 mb-3">Search Keywords</h3>
         
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 mb-2">
           <input
             type="text"
             value={searchKeywordsInput}
             onChange={(e) => setSearchKeywordsInput(e.target.value)}
             placeholder="Add a keyword..."
-            className="form-input"
+            className="form-input py-2"
           />
           <button
             type="button"
             onClick={addSearchKeyword}
-            className="px-4 py-2 border-4 border-black rounded-lg bg-secondary
+            className="px-3 py-2 border-4 border-black rounded-lg bg-secondary
                      shadow-[-2px_2px_0_0_#1f2024] transition-all duration-200
-                     font-right-grotesk text-white text-md tracking-wider
+                     font-right-grotesk text-white text-sm tracking-wider
                      hover:shadow-[-4px_4px_0_0_#1f2024] hover:translate-x-0.5 hover:-translate-y-0.5"
           >
             Add
           </button>
         </div>
         
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className="flex flex-wrap gap-2 mt-2 max-h-20 overflow-y-auto">
           {searchKeywords.map((keyword) => (
             <span
               key={keyword}
@@ -214,11 +215,11 @@ export default function AgentForm({ onSubmit, isLoading }: AgentFormProps) {
         </div>
       </div>
       
-      <div className="pt-4">
+      <div className="pt-2">
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full"
+          className="w-full py-3"
         >
           {isLoading ? (
             <>

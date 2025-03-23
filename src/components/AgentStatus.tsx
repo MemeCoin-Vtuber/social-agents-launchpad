@@ -67,8 +67,8 @@ export default function AgentStatus({ agentId, status, agentName }: AgentStatusP
     : 'Unknown';
 
   return (
-    <div className="agent-card space-y-4">
-      <div className="flex justify-between items-center">
+    <div className="agent-card">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-center">Agent Status</h2>
         <div className="flex items-center">
           <span className={`h-3 w-3 rounded-full mr-2 ${status.isRunning ? 'bg-lightBlue' : 'bg-gray-400'}`}></span>
@@ -78,128 +78,120 @@ export default function AgentStatus({ agentId, status, agentName }: AgentStatusP
         </div>
       </div>
       
-      <div className="border-t-4 border-black pt-4">
-        <h3 className="text-xl font-right-grotesk mb-2">
-          {agentName || 'Twitter Agent'} <span className="text-sm font-mono font-normal text-gray-600">({agentId})</span>
+      <div className="border-t-2 border-black pt-3 mb-4">
+        <h3 className="text-lg font-right-grotesk mb-2">
+          {agentName || 'Twitter Agent'} <span className="text-xs font-mono font-normal text-gray-600">({agentId})</span>
         </h3>
         
-        <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-          <div className="sm:col-span-1">
-            <dt className="text-sm font-bold text-gray-700">Initialized</dt>
-            <dd className="mt-1 text-sm">
-              {status.isInitialized ? 
-                <span className="text-green-600 font-bold">Yes</span> : 
-                <span className="text-red-600 font-bold">No</span>
-              }
-            </dd>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+          <div className="col-span-1">
+            <span className="text-xs font-bold text-gray-700 block">Initialized</span>
+            {status.isInitialized ? 
+              <span className="text-green-600 font-bold text-sm">Yes</span> : 
+              <span className="text-red-600 font-bold text-sm">No</span>
+            }
           </div>
           
-          <div className="sm:col-span-1">
-            <dt className="text-sm font-bold text-gray-700">Running</dt>
-            <dd className="mt-1 text-sm">
-              {status.isRunning ? 
-                <span className="text-green-600 font-bold">Yes</span> : 
-                <span className="text-red-600 font-bold">No</span>
-              }
-            </dd>
+          <div className="col-span-1">
+            <span className="text-xs font-bold text-gray-700 block">Running</span>
+            {status.isRunning ? 
+              <span className="text-green-600 font-bold text-sm">Yes</span> : 
+              <span className="text-red-600 font-bold text-sm">No</span>
+            }
           </div>
 
-          <div className="sm:col-span-1">
-            <dt className="text-sm font-bold text-gray-700">Created At</dt>
-            <dd className="mt-1 text-sm">
-              {formattedDate}
-            </dd>
+          <div className="col-span-1">
+            <span className="text-xs font-bold text-gray-700 block">Created</span>
+            <span className="text-sm">{formattedDate.split(',')[0]}</span>
           </div>
 
-          <div className="sm:col-span-1">
-            <dt className="text-sm font-bold text-gray-700">Activity</dt>
-            <dd className="mt-1 text-sm">
-              <div className="flex space-x-2">
-                <span className="px-2 py-1 bg-purple-light text-white rounded border-2 border-black text-xs">
-                  Tweets: {status.tweet_count || 0}
-                </span>
-                <span className="px-2 py-1 bg-secondary text-white rounded border-2 border-black text-xs">
-                  Replies: {status.reply_count || 0}
-                </span>
-                <span className="px-2 py-1 bg-primary text-white rounded border-2 border-black text-xs">
-                  Searches: {status.search_count || 0}
-                </span>
-              </div>
-            </dd>
+          <div className="col-span-1">
+            <span className="text-xs font-bold text-gray-700 block">Activity</span>
+            <div className="flex space-x-1">
+              <span className="px-1.5 py-0.5 bg-purple-light text-white rounded border-2 border-black text-xs">
+                T: {status.tweet_count || 0}
+              </span>
+              <span className="px-1.5 py-0.5 bg-secondary text-white rounded border-2 border-black text-xs">
+                R: {status.reply_count || 0}
+              </span>
+              <span className="px-1.5 py-0.5 bg-primary text-white rounded border-2 border-black text-xs">
+                S: {status.search_count || 0}
+              </span>
+            </div>
           </div>
-          
+        </div>
+        
+        <div className="grid grid-cols-1 gap-3 max-h-40 overflow-y-auto mb-3">
           {status.lastTweet && (
-            <div className="sm:col-span-2">
-              <dt className="text-sm font-bold text-gray-700">Last Tweet</dt>
-              <dd className="mt-1 text-sm p-3 bg-blue-light rounded border-2 border-black shadow-[-2px_2px_0_0_#1f2024]">
+            <div>
+              <span className="text-xs font-bold text-gray-700 block">Last Tweet</span>
+              <div className="mt-1 text-sm p-2 bg-blue-light rounded border-2 border-black shadow-[-2px_2px_0_0_#1f2024]">
                 {status.lastTweet}
-              </dd>
+              </div>
             </div>
           )}
           
           {status.lastSearch && (
-            <div className="sm:col-span-2">
-              <dt className="text-sm font-bold text-gray-700">Last Search</dt>
-              <dd className="mt-1 text-sm p-3 bg-yellow/30 rounded border-2 border-black shadow-[-2px_2px_0_0_#1f2024]">
+            <div>
+              <span className="text-xs font-bold text-gray-700 block">Last Search</span>
+              <div className="mt-1 text-sm p-2 bg-yellow/30 rounded border-2 border-black shadow-[-2px_2px_0_0_#1f2024]">
                 {status.lastSearch}
-              </dd>
+              </div>
             </div>
           )}
           
           {status.lastReply && (
-            <div className="sm:col-span-2">
-              <dt className="text-sm font-bold text-gray-700">Last Reply</dt>
-              <dd className="mt-1 text-sm p-3 bg-purple-light/20 rounded border-2 border-black shadow-[-2px_2px_0_0_#1f2024]">
+            <div>
+              <span className="text-xs font-bold text-gray-700 block">Last Reply</span>
+              <div className="mt-1 text-sm p-2 bg-purple-light/20 rounded border-2 border-black shadow-[-2px_2px_0_0_#1f2024]">
                 {status.lastReply}
-              </dd>
+              </div>
             </div>
           )}
-        </dl>
+        </div>
         
         {status.error && (
-          <div className="mt-4 p-3 bg-heroRed/10 border-2 border-heroRed rounded">
-            <p className="text-sm font-bold text-heroRed">Error</p>
+          <div className="p-2 bg-heroRed/10 border-2 border-heroRed rounded mb-3">
+            <p className="text-xs font-bold text-heroRed">Error</p>
             <p className="text-sm text-black">{status.error}</p>
           </div>
         )}
       </div>
 
       {/* Manual Tweet Posting */}
-      <div className="border-t-4 border-black pt-4">
-        <h3 className="text-xl font-right-grotesk mb-3">Post a Manual Tweet</h3>
-        <p className="text-sm font-bold mb-3">
-          Use this to manually post a tweet from your agent.
-        </p>
+      <div className="border-t-2 border-black pt-3 mb-4">
+        <h3 className="text-lg font-right-grotesk mb-2">Post a Manual Tweet</h3>
         
         {postSuccess && (
-          <div className="mb-4 p-3 bg-lightBlue border-2 border-black rounded">
+          <div className="mb-3 p-2 bg-lightBlue border-2 border-black rounded text-sm">
             {postSuccess}
           </div>
         )}
         
         {postError && (
-          <div className="mb-4 p-3 bg-heroRed/10 border-2 border-heroRed rounded">
+          <div className="mb-3 p-2 bg-heroRed/10 border-2 border-heroRed rounded text-sm">
             {postError}
           </div>
         )}
         
-        <div className="space-y-3">
+        <div>
           <textarea
             value={tweetContent}
             onChange={(e) => setTweetContent(e.target.value)}
             placeholder="What's happening?"
-            className="form-input"
-            rows={3}
+            className="form-input py-2 mb-2"
+            rows={2}
             maxLength={280}
           />
           <div className="flex justify-between items-center">
-            <div className="text-sm font-bold">
-              {280 - tweetContent.length} characters remaining
+            <div className="text-xs font-bold">
+              {280 - tweetContent.length} characters
             </div>
             <Button
               onClick={handlePostTweet}
               disabled={isPosting || !tweetContent.trim()}
               variant="secondary"
+              className="py-2 px-4 text-sm"
             >
               {isPosting ? 'Posting...' : 'Post Tweet'}
             </Button>
@@ -207,17 +199,11 @@ export default function AgentStatus({ agentId, status, agentName }: AgentStatusP
         </div>
       </div>
       
-      <div className="border-t-4 border-black pt-4">
-        <p className="text-sm font-bold">
-          The agent will automatically search for tweets and post updates based on the configured goal and search keywords.
-          You can also post manual tweets using the form above.
-        </p>
-        
-        <div className="mt-4 p-4 border-4 border-black bg-blue-light rounded shadow-[-3px_3px_0_0_#1f2024]">
-          <h4 className="text-sm font-bold text-black">Twitter API Integration</h4>
-          <p className="mt-1 text-sm">
-            This agent uses the Twitter API v2 to post real tweets to your Twitter account. Make sure your API credentials
-            have the necessary write permissions for posting tweets.
+      <div className="border-t-2 border-black pt-2">
+        <div className="p-3 border-2 border-black bg-blue-light rounded shadow-[-2px_2px_0_0_#1f2024] text-xs">
+          <h4 className="font-bold text-black">Twitter API Integration</h4>
+          <p>
+            This agent uses the Twitter API v2 to post real tweets to your Twitter account. Make sure your API credentials have the necessary write permissions.
           </p>
         </div>
       </div>
