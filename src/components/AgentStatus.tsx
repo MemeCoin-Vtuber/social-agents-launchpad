@@ -9,57 +9,9 @@ interface AgentStatusProps {
 }
 
 export default function AgentStatus({ agentId, status, agentName }: AgentStatusProps) {
-  const [tweetContent, setTweetContent] = useState('');
-  const [isPosting, setIsPosting] = useState(false);
-  const [postError, setPostError] = useState<string | null>(null);
-  const [postSuccess, setPostSuccess] = useState<string | null>(null);
-
   if (!agentId || !status) {
     return null;
   }
-
-  const handlePostTweet = async () => {
-    if (!tweetContent.trim()) {
-      setPostError('Tweet content cannot be empty');
-      return;
-    }
-
-    if (tweetContent.length > 280) {
-      setPostError('Tweet exceeds maximum length of 280 characters');
-      return;
-    }
-
-    setIsPosting(true);
-    setPostError(null);
-    setPostSuccess(null);
-
-    try {
-      const response = await fetch('/api/post-tweet', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          agentId,
-          content: tweetContent,
-          reasoning: 'Manually posted from agent dashboard'
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to post tweet');
-      }
-
-      setPostSuccess('Tweet posted successfully!');
-      setTweetContent('');
-    } catch (error) {
-      setPostError(error instanceof Error ? error.message : 'Failed to post tweet');
-    } finally {
-      setIsPosting(false);
-    }
-  };
 
   // Format created date
   const formattedDate = status.createdAt 
@@ -157,53 +109,12 @@ export default function AgentStatus({ agentId, status, agentName }: AgentStatusP
           </div>
         )}
       </div>
-
-      {/* Manual Tweet Posting */}
-      <div className="border-t-2 border-black pt-3 mb-4">
-        <h3 className="text-lg font-right-grotesk mb-2">Post a Manual Tweet</h3>
-        
-        {postSuccess && (
-          <div className="mb-3 p-2 bg-lightBlue border-2 border-black rounded text-sm">
-            {postSuccess}
-          </div>
-        )}
-        
-        {postError && (
-          <div className="mb-3 p-2 bg-heroRed/10 border-2 border-heroRed rounded text-sm">
-            {postError}
-          </div>
-        )}
-        
-        <div>
-          <textarea
-            value={tweetContent}
-            onChange={(e) => setTweetContent(e.target.value)}
-            placeholder="What's happening?"
-            className="form-input py-2 mb-2"
-            rows={2}
-            maxLength={280}
-          />
-          <div className="flex justify-between items-center">
-            <div className="text-xs font-bold">
-              {280 - tweetContent.length} characters
-            </div>
-            <Button
-              onClick={handlePostTweet}
-              disabled={isPosting || !tweetContent.trim()}
-              variant="secondary"
-              className="py-2 px-4 text-sm"
-            >
-              {isPosting ? 'Posting...' : 'Post Tweet'}
-            </Button>
-          </div>
-        </div>
-      </div>
       
       <div className="border-t-2 border-black pt-2">
         <div className="p-3 border-2 border-black bg-blue-light rounded shadow-[-2px_2px_0_0_#1f2024] text-xs">
           <h4 className="font-bold text-black">Twitter API Integration</h4>
           <p>
-            This agent uses the Twitter API v2 to post real tweets to your Twitter account. Make sure your API credentials have the necessary write permissions.
+            This agent uses the Twitter API v2 to post real tweets to your Twitter account and will automatically search for tweets and post updates based on the configured goal and search keywords.
           </p>
         </div>
       </div>
