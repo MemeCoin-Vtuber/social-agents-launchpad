@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import AgentForm from '../components/AgentForm';
 import AgentStatus from '../components/AgentStatus';
-import TwitterInstructions from '../components/TwitterInstructions';
 import { AgentConfig, AgentStatus as AgentStatusType } from '../lib/types';
 import Button from '../components/Button';
 
@@ -109,28 +108,28 @@ export default function Home() {
         <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
       </Head>
 
-      <main className="py-6 md:py-10">
+      <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-right-grotesk font-extrabold text-black hero-heading">
+            <h1 className="text-4xl md:text-5xl font-right-grotesk font-extrabold text-black hero-heading">
               Vtuber Social Studio
             </h1>
-            <p className="mt-2 max-w-2xl mx-auto text-lg md:text-xl text-black">
+            <p className="mt-3 max-w-2xl mx-auto text-xl text-black sm:mt-4">
               Let AI Handle Your Token's Social Media Presence
             </p>
           </div>
           
           {error && (
-            <div className="mt-4 max-w-3xl mx-auto p-3 bg-heroRed/10 border-4 border-heroRed rounded-lg shadow-[-3px_3px_0_0_#1f2024]">
+            <div className="mt-8 max-w-3xl mx-auto p-4 bg-heroRed/10 border-4 border-heroRed rounded-lg shadow-[-3px_3px_0_0_#1f2024]">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-heroRed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-6 w-6 text-heroRed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <div className="ml-2">
-                  <h3 className="text-base font-bold text-heroRed">Error</h3>
-                  <div className="mt-1 text-sm">
+                <div className="ml-3">
+                  <h3 className="text-lg font-bold text-heroRed">Error</h3>
+                  <div className="mt-2 text-md">
                     <p>{error}</p>
                   </div>
                 </div>
@@ -138,46 +137,64 @@ export default function Home() {
             </div>
           )}
           
-          {/* Hidden Instructions as per your request */}
-          {/* <div className="mt-6 max-w-3xl mx-auto">
-            <TwitterInstructions />
-          </div> */}
-          
-          <div className="mt-6 max-w-6xl mx-auto grid gap-4 md:gap-6 grid-cols-1 lg:grid-cols-2">
-            <div className="transform transition duration-300 hover:-translate-y-1">
-              <AgentForm onSubmit={createAgent} isLoading={isCreating} />
-            </div>
-            <div className="transform transition duration-300 hover:-translate-y-1">
-              <AgentStatus 
-                agentId={agentId} 
-                status={agentStatus} 
-                agentName={agentName} 
-              />
-              
-              {!agentId && !agentStatus && (
+          <div className="mt-6 space-y-6">
+            {!agentId || !agentStatus ? (
+              <div className="max-w-6xl mx-auto transform transition duration-300 hover:-translate-y-1">
+                <AgentForm onSubmit={createAgent} isLoading={isCreating} />
+              </div>
+            ) : (
+              <div className="max-w-6xl mx-auto transform transition duration-300 hover:-translate-y-1">
+                <AgentStatus 
+                  agentId={agentId} 
+                  status={agentStatus} 
+                  agentName={agentName} 
+                />
+              </div>
+            )}
+            
+            {!agentId && !agentStatus && (
+              <div className="max-w-6xl mx-auto transform transition duration-300 hover:-translate-y-1">
                 <div className="agent-card">
-                  <h2 className="text-xl font-bold mb-3">No Agent Running</h2>
-                  <p className="text-gray-700 text-sm mb-3">
-                    Fill out the form to create and start your Twitter agent.
-                  </p>
-                  <div className="border-t-2 border-black pt-3">
-                    <h3 className="text-lg font-medium mb-2">What This Agent Can Do:</h3>
-                    <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
-                      <li>Post tweets based on its goal and personality</li>
-                      <li>Search for tweets using specified keywords</li>
-                      <li>Reply to tweets it finds interesting or relevant</li>
-                      <li>Run autonomously based on GAME framework</li>
-                    </ul>
+                  <h2 className="text-2xl font-bold mb-4">What This Agent Can Do</h2>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-primary/10 border-2 border-black rounded-lg p-4 shadow-[-3px_3px_0_0_#1f2024]">
+                      <h3 className="text-lg font-medium mb-2">Autonomously Tweet</h3>
+                      <p className="text-gray-700">
+                        The agent will post tweets based on its goal and personality, engaging with your audience on your behalf.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-secondary/10 border-2 border-black rounded-lg p-4 shadow-[-3px_3px_0_0_#1f2024]">
+                      <h3 className="text-lg font-medium mb-2">Search & Monitor</h3>
+                      <p className="text-gray-700">
+                        Using your specified keywords, the agent will search Twitter for relevant conversations and content.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-purple-light/10 border-2 border-black rounded-lg p-4 shadow-[-3px_3px_0_0_#1f2024]">
+                      <h3 className="text-lg font-medium mb-2">Engage With Community</h3>
+                      <p className="text-gray-700">
+                        The agent will automatically reply to relevant tweets, helping build and maintain your community.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-lightBlue/20 border-2 border-black rounded-lg p-4 shadow-[-3px_3px_0_0_#1f2024]">
+                      <h3 className="text-lg font-medium mb-2">Continuous Operation</h3>
+                      <p className="text-gray-700">
+                        Once set up, the agent runs autonomously using the GAME framework, maintaining a consistent presence.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </main>
 
-      <footer className="bg-secondary mt-12 md:mt-20 border-t-8 border-black">
-        <div className="max-w-7xl mx-auto py-6 px-4 overflow-hidden sm:px-6 lg:px-8">
+      <footer className="bg-secondary mt-20 border-t-8 border-black">
+        <div className="max-w-7xl mx-auto py-8 px-4 overflow-hidden sm:px-6 lg:px-8">
           <p className="text-center text-lg text-white font-bold">
             Powered by GAME SDK by Virtuals Protocol
           </p>
