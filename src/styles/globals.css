@@ -2,29 +2,135 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+@layer base {
   body {
-    color: white;
-    background: black;
+    @apply font-space-mono text-black text-base leading-normal m-0;
   }
+  h1 {
+    @apply mt-5 mb-2.5 font-right-grotesk text-[38px] leading-tight font-bold;
+  }
+  h2 {
+    @apply mt-0 mb-2 font-right-grotesk text-3xl leading-tight font-bold tracking-wide uppercase;
+  }
+  h3 {
+    @apply mt-5 mb-2.5 font-right-grotesk text-[1.7em] leading-[30px] font-bold;
+  }
+  a {
+    @apply text-black font-bold no-underline;
+  }
+  li {
+    @apply pb-2;
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .primary-button {
+    @apply px-10 py-4 border-solid border-4 border-black rounded-lg bg-primary 
+           shadow-[-3px_3px_0_0_#1f2024] transition-all duration-200 
+           font-right-grotesk text-white text-xl text-center tracking-wider 
+           cursor-pointer inline-block;
+  }
+  .primary-button:hover {
+    @apply bg-[#e42c7f] shadow-[-6px_6px_0_0_#1f2024] translate-x-1 -translate-y-1;
+  }
+  .primary-button.hero {
+    @apply z-[1000] mt-4 mb-6 px-10 py-5 self-center border-8 rounded-xl 
+           bg-lightBlue shadow-[-6px_6px_0_0_#1f2024] transition-all 
+           text-black text-2xl;
+  }
+  .primary-button.hero:hover {
+    @apply relative z-[4] bg-[#ff00a1] shadow-[-11px_11px_0_0_#1f2024] text-white;
+  }
+  
+  /* Forms */
+  .form-container {
+    @apply max-w-[800px] mx-auto px-4 py-8;
+  }
+  .form-input {
+    @apply w-full px-4 py-3 border-4 border-black rounded-lg bg-white
+           focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
+           transition-all duration-200;
+  }
+  .form-label {
+    @apply block mb-2 font-bold text-lg;
+  }
+  
+  /* Cards */
+  .feature-card {
+    @apply bg-white border-4 border-black rounded-lg p-6
+           transform transition-all duration-300 hover:scale-105
+           hover:shadow-[-8px_8px_0_0_#1f2024];
+  }
+  
+  /* Agent Card */
+  .agent-card {
+    @apply bg-white border-4 border-black rounded-lg p-6
+           transform transition-all duration-300
+           shadow-[-5px_5px_0_0_#1f2024];
+  }
+  
+  /* Status Badge */
+  .status-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+  .status-badge.active {
+    @apply bg-lightBlue text-black;
+  }
+  .status-badge.idle {
+    @apply bg-gray-200 text-gray-700;
+  }
+  
+  /* Keyword Tags */
+  .keyword-tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+           bg-purple-light text-white border-2 border-black
+           shadow-[-2px_2px_0_0_#1f2024] transition-all duration-200;
+  }
+  .keyword-tag:hover {
+    @apply bg-purple-dark shadow-[-3px_3px_0_0_#1f2024] translate-x-0.5 -translate-y-0.5;
+  }
+}
+
+/* Animations */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-count-up {
+  animation: countUp 0.6s ease-out forwards;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .primary-button.hero {
+    @apply px-6 py-4 text-xl border-4;
+  }
+  .hero-heading {
+    @apply text-4xl;
+  }
+  .mobile-hero-button {
+    @apply w-full px-6 py-3 border-4 border-black rounded-lg font-bold
+           text-center relative z-10 shadow-[-4px_4px_0_0_#1f2024]
+           transition-all duration-200;
+  }
+  .mobile-hero-button:hover {
+    @apply transform translate-x-1 -translate-y-1
+           shadow-[-6px_6px_0_0_#1f2024];
+  }
+  .mobile-hero-button:active {
+    @apply transform translate-x-0 translate-y-0
+           shadow-[-2px_2px_0_0_#1f2024];
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full hover:bg-gray-500;
 }
