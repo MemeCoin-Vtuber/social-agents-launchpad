@@ -5,6 +5,10 @@
 @layer base {
   body {
     @apply font-space-mono text-black text-base leading-normal m-0;
+    background-color: theme('colors.blue.light');
+    background-image: url('/pattern-bg.png');
+    background-repeat: repeat;
+    background-blend-mode: overlay;
   }
   h1 {
     @apply mt-5 mb-2.5 font-right-grotesk text-[38px] leading-tight font-bold;
@@ -133,4 +137,13 @@
 }
 ::-webkit-scrollbar-thumb {
   @apply bg-gray-400 rounded-full hover:bg-gray-500;
+}
+
+/* Add this new utility class */
+@layer utilities {
+  .bg-pattern {
+    background-image: url('/pattern-bg.png');
+    background-repeat: repeat;
+    background-blend-mode: overlay;
+  }
 }

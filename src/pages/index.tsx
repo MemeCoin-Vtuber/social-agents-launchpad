@@ -100,7 +100,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-light">
+    <div className="min-h-screen bg-blue bg-[url('/pattern-bg.png')] bg-repeat bg-opacity-50">
       <Head>
         <title>Vtuber Social Studio</title>
         <meta name="description" content="Let AI Handle Your Token's Social Media Presence" />
